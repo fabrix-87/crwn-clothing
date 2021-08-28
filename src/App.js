@@ -26,9 +26,6 @@ class App extends Component
         const userData = await createUserProfileDocument(userAuth);
         
         this.setState({ currentUser: userData });
-
-        console.log(this.state);
-
       }else{
         this.setState({ currentUser: userAuth });
       }          

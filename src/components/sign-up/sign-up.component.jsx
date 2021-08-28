@@ -28,24 +28,20 @@ class SignUp extends Component{
             return;
         }
 
-        try{
-            await createUserWithEmailAndPassword( auth, email, password)            
-                .then((userCredential) => {
-                    createUserProfileDocument(userCredential.user, {displayName});
-                })            
-            
-            this.state = {
-                displayName: '',
-                email: '',
-                password: '',
-                confirmPassword: ''
-            }
+        createUserWithEmailAndPassword( auth, email, password)            
+            .then((userCredential) => {
+                createUserProfileDocument(userCredential.user, {displayName});
 
-        }catch(error){
-            console.log('error :' + error.message);
-        }
-        
-
+                this.state = {
+                    displayName: '',
+                    email: '',
+                    password: '',
+                    confirmPassword: ''
+                }
+            })
+            .catch((error) => {         
+                console.log('error :' + error.message);
+            })         
     }
 
     handleChange = event => {
