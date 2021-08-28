@@ -1,9 +1,9 @@
 import { createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
-import rootRecuder from "./root-recuder";
+import rootReducer from "./root-reducer";
 
 const middlewares = [logger];
 
-const crwnStore = createStore(rootRecuder,applyMiddleware(...middlewares));
+const crwnStore = createStore(rootReducer,applyMiddleware(...middlewares));
 
 export default crwnStore;
