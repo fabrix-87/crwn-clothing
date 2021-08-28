@@ -11,10 +11,10 @@ class SignUp extends Component{
         super();
 
         this.state = {
-            displayName: 'Fabrizio',
+            displayName: '',
             email: '',
-            password: '101187',
-            confirmPassword: '101187'
+            password: '',
+            confirmPassword: ''
         }
     }
 
