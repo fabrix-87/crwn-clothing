@@ -2,8 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
-
+import { getFirestore, setDoc, getDoc, doc } from "firebase/firestore"
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -23,14 +22,47 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
+const firestore = getFirestore();
 
 const provider = new GoogleAuthProvider();
 
 export const auth = getAuth();
 
-export const signInWithGoogle = () => {
-    signInWithPopup(auth, provider)
-        .then((result) => {
+
+export const createUserProfileDocument = async (userAuth, ...additionData) => {
+    if(!userAuth) return;
+    
+    const userRef = doc(firestore, "users", userAuth.uid);
+    let snapShot = await getDoc(userRef);
+
+    if(!snapShot.exists()){
+        const { displayName, email} = userAuth;
+        const createAt = new Date();
+
+        try{
+            const userData = {
+                displayName,
+                email,
+                createAt
+             }
+
+            Object.assign(userData, ...additionData);
+
+            await setDoc(userRef, userData);
+            console.log("utente creato!");
+            
+            snapShot = await getDoc(userRef);
+
+        }catch(error){
+            console.log('error creating user', error.message);
+        }
+    }
+    return { ...snapShot.data(), id: snapShot.id};
+}
+
+export const signInWithGoogle = async () => {
+    return signInWithPopup(auth, provider)
+         .then((result) => {
             /*
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -52,7 +84,10 @@ export const signInWithGoogle = () => {
             // ...
             */
             console.log(error)
-        });
+        }); 
     }
+
+
+
 
 export default firebase;
