@@ -45,8 +45,12 @@
       }
   
       .price {
-        width: 10%;
-      }
+        width: 15%;
+
+        &::before{
+          content: '€ ';
+        }
+      }      
     }
   }
   
