@@ -7,7 +7,7 @@ import './collection-preview.styles.scss'
 const CollectionPreview = ({title, items, routeName, path}) => {
     return(
     <div className="collection-preview">
-        <h1 className="title"><Link to={`${path}/${routeName}`}>{title}</Link></h1>
+        <h1 className="title"><Link to={`${path}/${routeName.toLowerCase()}`}>{title}</Link></h1>
         <div className="preview">
         {
             items

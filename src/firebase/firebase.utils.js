@@ -2,7 +2,12 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore, setDoc, getDoc, doc } from "firebase/firestore"
+import { 
+    getFirestore, 
+    setDoc, 
+    getDoc, 
+    doc
+} from "firebase/firestore"
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -22,7 +27,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
-const firestore = getFirestore();
+export const firestore = getFirestore();
 
 const provider = new GoogleAuthProvider();
 
@@ -87,7 +92,41 @@ export const signInWithGoogle = async () => {
         }); 
     }
 
+export const convertCollectionsSnapshopToMap = (collections) => {
+    const covertedCollections = collections.docs.map(
+        doc => {
+            const { title, items} = doc.data()
+            
+            return {
+                routeName: encodeURI(title),
+                id: doc.id,
+                title,
+                items
+            }
+        }
+        )
+        
+        return covertedCollections.reduce((accumulator, collection) => {
+            accumulator[collection.title.toLowerCase()] = collection;
+            return accumulator;
+        }, {})
+    }
+    
 
+    
+    /*
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(firestore, collectionKey)
+    
+    const batch = writeBatch(firestore)
 
+    objectsToAdd.forEach(element => {
+        const newDocRef = doc(collectionRef)
+        batch.set(newDocRef, element)
+    });
+
+    return await batch.commit()
+}
+*/
 
 export default firebase;

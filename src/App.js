@@ -13,12 +13,15 @@ import { setCurrentUser } from './redux/user/user.actions'
 import { selectCurrentUser } from './redux/user/user.selectors';
 import CheckoutPage from './pages/checkout/checkout.component';
 
+//import { selectCollectionsForProview } from './redux/shop/shop.selectors'
+
 class App extends Component
 {
   unsubscriptFromAuth = null;
 
   componentDidMount(){
 
+    //const { setCurrentUser, collectionsArray } = this.props;
     const { setCurrentUser } = this.props;
 
     this.unsubscriptFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -29,13 +32,19 @@ class App extends Component
         setCurrentUser(userAuth);
       }          
     });
+    /*
+    addCollectionAndDocuments(
+      'collections', 
+      collectionsArray.map( ({title, items}) => ({title, items}) )
+    )
+    */
   }
 
   componentWillUnmount(){
     this.unsubscriptFromAuth();
   }
 
-  render() {
+  render() {  
     return (
       <div className="App">
         <Header/>
