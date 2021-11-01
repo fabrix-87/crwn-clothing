@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import CustomButton from '../custom-button/custom-button.component'
 import FormInput from '../form-input/form-input.componet'
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils'
 
 import './sign-up.styles.scss'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+
+import { connect } from 'react-redux'
+import { signUpStart } from '../../redux/user/user.actions'
 
 class SignUp extends Component{
     constructor(){
@@ -22,26 +23,14 @@ class SignUp extends Component{
         event.preventDefault();
 
         const {displayName, email, password, confirmPassword} = this.state;
+        const {signUpStart} = this.props;
 
         if(password !== confirmPassword){
             alert('Le due password non coincidono');
             return;
         }
 
-        createUserWithEmailAndPassword( auth, email, password)            
-            .then((userCredential) => {
-                createUserProfileDocument(userCredential.user, {displayName});
-
-                this.state = {
-                    displayName: '',
-                    email: '',
-                    password: '',
-                    confirmPassword: ''
-                }
-            })
-            .catch((error) => {         
-                console.log('error :' + error.message);
-            })         
+        signUpStart(email, password, displayName);       
     }
 
     handleChange = event => {
@@ -97,4 +86,10 @@ class SignUp extends Component{
     }
 }
 
-export default SignUp;
+const mapDispatchToState = dispatch => ({
+    signUpStart: (email, password, displayName) => dispatch(
+        signUpStart({email,password, displayName})
+    )
+})
+
+export default connect(null,mapDispatchToState)(SignUp);

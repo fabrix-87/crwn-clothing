@@ -29,9 +29,18 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 export const firestore = getFirestore();
 
-const provider = new GoogleAuthProvider();
+export const googleProvider = new GoogleAuthProvider();
 
 export const auth = getAuth();
+
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = auth.onAuthStateChanged(userAuth => {
+            unsubscribe();
+            resolve(userAuth)
+        }, reject)
+    })
+}
 
 
 export const createUserProfileDocument = async (userAuth, ...additionData) => {
@@ -66,7 +75,7 @@ export const createUserProfileDocument = async (userAuth, ...additionData) => {
 }
 
 export const signInWithGoogle = async () => {
-    return signInWithPopup(auth, provider)
+    return signInWithPopup(auth, googleProvider)
          .then((result) => {
             /*
             // This gives you a Google Access Token. You can use it to access the Google API.
@@ -92,7 +101,7 @@ export const signInWithGoogle = async () => {
         }); 
     }
 
-export const convertCollectionsSnapshopToMap = (collections) => {
+export const convertCollectionsSnapshotToMap = (collections) => {
     const covertedCollections = collections.docs.map(
         doc => {
             const { title, items} = doc.data()
