@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './App.css';
 import Header from './components/header/header.component';
@@ -15,11 +14,16 @@ import { checkUserSession } from './redux/user/user.actions';
 
 //import { selectCollectionsForProview } from './redux/shop/shop.selectors'
 
-const App = ({checkUserSession,currentUser}) =>
+//const App = ({checkUserSession,currentUser}) => // prima degli Hooks
+const App = () =>
 {
+  const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();    
+
   useEffect(() => {
-      checkUserSession();
-  },[checkUserSession])
+      // checkUserSession(); // prima degli hooks
+      dispatch(checkUserSession())
+  },[dispatch])
 
   return (
     <div className="App">
@@ -42,6 +46,7 @@ const App = ({checkUserSession,currentUser}) =>
   )
 }
 
+/* // prima degli hooks
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 });
@@ -49,5 +54,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   checkUserSession: () => dispatch(checkUserSession())
 })
+*/
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default App;
+//export default connect(mapStateToProps,mapDispatchToProps)(App); // prima degli Hooks
