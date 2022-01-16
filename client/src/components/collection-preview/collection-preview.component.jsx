@@ -4,7 +4,8 @@ import CollectionItem from '../collection-item/collection-item.component'
 
 import './collection-preview.styles.scss'
 
-const CollectionPreview = ({title, items, routeName, path}) => {
+const CollectionPreview = ({title, items, path}) => {
+    const routeName = encodeURI(title);
     return(
     <div className="collection-preview">
         <h1 className="title"><Link to={`${path}/${routeName.toLowerCase()}`}>{title}</Link></h1>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { ReactComponent as Logo } from '../../assets/crown.svg'
@@ -7,13 +7,14 @@ import { HeaderContainer, LogoContainer, OptionsContainer, OptionLink } from './
 
 import CartIcon from '../cart-icon/cart-icon.component'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component'
-import { selectCartHidden } from '../../redux/cart/cart.selectors'
 import { selectCurrentUser } from '../../redux/user/user.selectors'
 import { signOutStart } from '../../redux/user/user.actions'
 
+import { cartContex } from '../../providers/cart/cart.provider'
+
 const Header = () => {
     const currentUser = useSelector(selectCurrentUser);
-    const hidden = useSelector(selectCartHidden);
+    const {hidden} = useContext(cartContex);
     const dispatch = useDispatch();
 
     return(
@@ -38,7 +39,7 @@ const Header = () => {
             <CartIcon/>
         </OptionsContainer>
         {
-            hidden ? null : <CartDropdown />
+            hidden ? false : <CartDropdown />
         }        
     </HeaderContainer>
     )

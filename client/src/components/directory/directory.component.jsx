@@ -1,14 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import MenuItem from '../menu-item/menu-item.component';
 
-import { useSelector } from 'react-redux';
-
-import { selectDirectorySections } from '../../redux/directory/directory.selectors';
-
 import './directory.styles.scss';
+import { directoryContex } from '../../contexts/directory/directory.contex';
 
 const Directory = () => {
-    const sections = useSelector(selectDirectorySections);
+    const {sections} = useContext(directoryContex);
 
     return(
         <div className='directory-menu'>

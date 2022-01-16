@@ -1,24 +1,22 @@
 import React from "react";
-import { selectCollectionsForProview } from '../../redux/shop/shop.selectors'
 
 import './collections-overview.styles.scss'
 
 import CollectionPreview from "../collection-preview/collection-preview.component";
-import { withRouter } from "react-router";
-import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
-const CollectionsOverview = ({match}) => {
-    const collections = useSelector(selectCollectionsForProview);
-
+const CollectionsOverview = ({collections}) => {
+    const location = useLocation();
+    
     return (
         <div className='collections-overview'>
             {
                 collections.map(({id, ...otherCollectionProps}) => (
-                    <CollectionPreview key={id} {...otherCollectionProps} path={match.path}></CollectionPreview>
+                    <CollectionPreview key={id} {...otherCollectionProps} path={location.pathname}></CollectionPreview>
                 ))
             }  
         </div>
     )
 }
 
-export default withRouter(CollectionsOverview);
+export default CollectionsOverview;
